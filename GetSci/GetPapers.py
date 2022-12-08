@@ -1,8 +1,3 @@
-# -*- coding: utf-8 -*-
-# @Time : 2022/12/3 17:54
-# @Author : lza
-# @File : GetPapers.py
-# @Software: PyCharm
 from random import choice
 from requests import get
 from selenium import webdriver
@@ -18,7 +13,7 @@ from os import mkdir, path
 def get_links(theme, page):
     start_time = time()
     code = 'gfsoso'                                     # 验证码
-    if not path.exists("./papers"):                  # 后续可以改成以主题命名
+    if not path.exists("./papers"):                     # 后续可以改成以主题命名
         mkdir("./papers")
     info = pd.DataFrame({"文章名": "示例", "doi": "示例", "发表年份": "示例",
                          "引用数": "示例", "摘要": "示例", "作者": "示例", "文章链接": "示例"}, index=range(1))
@@ -40,7 +35,7 @@ def get_links(theme, page):
         soup = BeautifulSoup(driver.page_source, 'html.parser')
         papers = soup.find_all('div', attrs={'class': "gs_r gs_or gs_scl"})
         for paper in papers:
-            if re.search(r'[图书]', str(paper)):           # 判断是否是无效的图书链接，有点问题，但是能用
+            if re.search(r'[图书]', str(paper)):         # 判断是否是无效的图书链接，有点问题，但是能用
                 continue
             links.append((re.findall(re.compile(r'href="(.*?)"'), str(paper.find('h3', attrs={'class': "gs_rt"}))))[0])  # 获取文章链接
             cites.append(int((re.findall(re.compile(r'<a href=.*?>被引用次数：(.*?)</a>'),
@@ -79,7 +74,6 @@ def get_paper(links):
     dois = []
     authors = []
     paper_names = []
-    # journals = []
     for link in links:
         chrome_options = webdriver.ChromeOptions()      # 设置selenium选项
         chrome_options.add_argument("--headless")       # 设置无界面模式
@@ -93,7 +87,6 @@ def get_paper(links):
             dois.append('oops, cant get it')
             authors.append('oops, cant get it')
             paper_names.append('oops, cant get it')
-            # journals.append('oops, cant get it')
             continue
         papers = soup.find_all('div', attrs={'id': "menu"})
         for paper in papers:
@@ -119,13 +112,7 @@ def get_paper(links):
                 with open(path, 'wb') as fp:
                     fp.write(resp.content)
                     fp.close()
-            # baidu_schoolar = "https://xueshu.baidu.com/"
-            # driver.get(baidu_schoolar)
-            # driver.find_element("name", "wd").send_keys(doi, Keys.ENTER)
-            # txt = BeautifulSoup(driver.page_source, "html.parser").find('a', attrs = {'class': "journal_title"})
-            # journal = (re.findall(re.compile(r'<a class.*?>(.*?)</a>'), str(txt))) # 有问题，list index out of range，索引超限
-            # journal = str(list(journal)[0])
-            # journals.append(journal)
+
 
     return dois, paper_names, authors
 
