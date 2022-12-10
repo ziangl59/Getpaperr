@@ -1,5 +1,7 @@
-from GetPapers import get_links
+# from GetPapers import get_links
 from time import time, sleep
+from GetPapers_ver20 import main_get
+
 
 
 def main():
@@ -10,11 +12,11 @@ def main():
     theme = revise_theme(theme)
     print("您要获取的主题是：%s" % theme)
     print("您要获取的数量是：%i" % number)
-    get_links(theme, page)
+    main_get(theme, page)
     end_time = time()
-    print("总用时 %.3f s" % (end_time-start_time))
-    sleep(5)
+    print("总用时 %.5f s" % (end_time-start_time))
     for i in range(5):
+        sleep(1)
         print("\r程序将在 %i s后退出" % (5-i))
 
 
@@ -40,7 +42,7 @@ def revise_theme(theme):
     theme = theme.split()
     theme = "+".join(theme)
     return theme
-# 后续加入溯源，多线程，ip代理
+# 后续加入溯源，ip代理
 
 
 
